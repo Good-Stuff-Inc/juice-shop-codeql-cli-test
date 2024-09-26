@@ -1,4 +1,4 @@
-name: CodeQL C# Analysis
+name: CodeQL Javascript Analysis
 
 on:
   workflow_dispatch:
