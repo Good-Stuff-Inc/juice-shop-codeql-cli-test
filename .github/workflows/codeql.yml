@@ -1,0 +1,36 @@
+name: CodeQL C# Analysis
+
+on:
+  workflow_dispatch:
+
+jobs:
+  codeql-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install CodeQL CLI
+      run: |
+        wget https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip
+        unzip codeql-linux64.zip
+        sudo mv codeql /usr/local/bin
+
+    - name: Create CodeQL database
+      run: |
+        codeql database create codeql-db --language=javascript
+
+    - name: Perform CodeQL Analysis
+      run: |
+        codeql database analyze \
+          codeql-db \
+          --format=sarif-latest \
+          --output=codeql-results.sarif \
+          /opt/hostedtoolcache/CodeQL/*/x64/codeql-repo/javascript/ql/src/codeql-suites/javascript-security-extended.qls \
+          /opt/hostedtoolcache/CodeQL/*/x64/codeql-repo/javascript/ql/src/codeql-suites/javascript-code-quality.qls
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: codeql-results.sarif
