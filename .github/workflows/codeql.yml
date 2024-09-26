@@ -1,4 +1,4 @@
-name: CodeQL C# Analysis
+name: CodeQL Javascript Analysis
 
 on:
   workflow_dispatch:
@@ -16,6 +16,7 @@ jobs:
         wget https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip
         unzip codeql-linux64.zip
         sudo mv codeql /usr/local/bin
+        echo 'export PATH=$PATH:/usr/local/bin/codeql' >> $GITHUB_ENV
 
     - name: Create CodeQL database
       run: |
